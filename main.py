@@ -14,3 +14,37 @@ def obtener_clientes_resumen():
     return supabase.rpc("clientes_resumen").execute().data
 
 
+
+@router.get("/clientes/{rfc}/dashboard/anual/{year}")
+def dashboard_anual(rfc: str, year: int):
+    try:
+        res = supabase.rpc(
+            "rpc_dashboard_resumen_anual",
+            {
+                "p_rfc": rfc,
+                "p_year": year
+            }
+        ).execute()
+
+        return res.data or {}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/clientes/{rfc}/dashboard/mensual/{year}/{month}")
+def dashboard_mensual(rfc: str, year: int, month: int):
+    try:
+        res = supabase.rpc(
+            "rpc_dashboard_resumen_mensual",
+            {
+                "p_rfc": rfc,
+                "p_year": year,
+                "p_month": month
+            }
+        ).execute()
+
+        return res.data or {}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

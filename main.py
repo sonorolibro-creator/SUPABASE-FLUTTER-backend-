@@ -19,12 +19,14 @@ def obtener_clientes_resumen():
 def dashboard_anual(rfc: str, year: int):
     try:
         res = supabase.rpc(
-            "rpc_dashboard_resumen_anual",
+          "dashboard_anual",
             {
                 "p_rfc": rfc,
                 "p_year": year
             }
         ).execute()
+        print(res.data)  # 👈 ESTO ES CLAVE
+      
 
         return res.data or {}
 
@@ -48,3 +50,4 @@ def dashboard_mensual(rfc: str, year: int, month: int):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+

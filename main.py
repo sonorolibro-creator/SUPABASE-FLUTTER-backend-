@@ -1,17 +1,15 @@
+import os
 from fastapi import FastAPI
 from supabase import create_client
 
-# Creamos nuestra app
 app = FastAPI()
 
-# Conectamos con Supabase
-supabase = create_client(
-    "SUPABASE_URL",
-    "SUPABASE_ANON_KEY"
-)
+SUPABASE_URL = os.environ.get("SUPABASE_URL")
+SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
 
-# Ruta para pedir datos
-@app.get("/clientes")
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+@app.get("/cfdis")
 def obtener_cfdis():
-    respuesta = supabase.table("clientes").select("*").execute()
-    return respuesta.data
+    data = supabase.table("cfdis").select("*").execute()
+    return data.data

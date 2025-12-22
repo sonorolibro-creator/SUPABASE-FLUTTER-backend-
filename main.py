@@ -10,10 +10,22 @@ SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 @app.get("/clientes")
-def obtener_clientes():
-    data = supabase.table("clientes").select("*").execute()
-    return data.data
-
+def obtener_clientes(
+    limit: int = 20,
+    offset: int = 0
+):
+    data = (
+        supabase
+        .table("clientes")
+        .select("id, nombre, rfc")
+        .range(offset, offset + limit - 1)
+        .execute()
+    )
+    return {
+        "items": data.data,
+        "limit": limit,
+        "offset": offset
+    }
 
 @app.get("/cfdis/count")
 def contar_cfdis(rfc: str):
@@ -44,4 +56,5 @@ def contar_emitidos(rfc: str):
     return {
         "rfc": rfc,
         "total": response.count
+
     }

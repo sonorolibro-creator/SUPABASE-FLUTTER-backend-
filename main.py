@@ -9,52 +9,8 @@ SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-@app.get("/clientes")
-def obtener_clientes(
-    limit: int = 20,
-    offset: int = 0
-):
-    data = (
-        supabase
-        .table("clientes")
-        .select("id, nombre, rfc")
-        .range(offset, offset + limit - 1)
-        .execute()
-    )
-    return {
-        "items": data.data,
-        "limit": limit,
-        "offset": offset
-    }
-
-@app.get("/cfdis/count")
-def contar_cfdis(rfc: str):
-    response = (
-        supabase
-        .table("cfdi_xml")
-        .select("*", count="exact")
-        .or_(f"rfc_emisor.eq.{rfc},rfc_receptor.eq.{rfc}")
-        .execute()
-    )
-
-    return {
-        "rfc": rfc,
-        "total": response.count
-    }
+@app.get("/clientes/resumen")
+def obtener_clientes_resumen():
+    return supabase.rpc("clientes_resumen").execute().data
 
 
-@app.get("/cfdis/count")
-def contar_emitidos(rfc: str):
-    response = (
-        supabase
-        .table("cfdi_xml")
-        .select("*", count="exact")
-        .eq(f"rfc_emisor",rfc)
-        .execute()
-    )
-
-    return {
-        "rfc": rfc,
-        "total": response.count
-
-    }

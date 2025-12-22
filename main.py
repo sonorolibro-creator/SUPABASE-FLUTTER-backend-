@@ -9,7 +9,7 @@ SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-@app.get("/cfdis")
-def obtener_cfdis():
-    data = supabase.table("cfdis").select("*").execute()
+@app.get("/clientes")
+def obtener_clientes():
+    data = supabase.table("clientes").select("*").execute()
     return data.data

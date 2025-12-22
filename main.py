@@ -13,3 +13,19 @@ supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 def obtener_clientes():
     data = supabase.table("clientes").select("*").execute()
     return data.data
+
+
+@app.get("/cfdis/count")
+def contar_cfdis(rfc: str):
+    response = (
+        supabase
+        .table("cfdi_xml")
+        .select("*", count="exact")
+        .or_(f"rfc_emisor.eq.{rfc},rfc_receptor.eq.{rfc}")
+        .execute()
+    )
+
+    return {
+        "rfc": rfc,
+        "total": response.count
+    }

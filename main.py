@@ -29,3 +29,19 @@ def contar_cfdis(rfc: str):
         "rfc": rfc,
         "total": response.count
     }
+
+
+@app.get("/cfdis/count")
+def contar_emitidos(rfc: str):
+    response = (
+        supabase
+        .table("cfdi_xml")
+        .select("*", count="exact")
+        .eq(f"rfc_emisor",rfc)
+        .execute()
+    )
+
+    return {
+        "rfc": rfc,
+        "total": response.count
+    }

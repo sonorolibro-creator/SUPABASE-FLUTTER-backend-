@@ -13,3 +13,8 @@ def dashboard_cfdi(
         return get_dashboard(cliente_rfc, year, month)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+        
+
+@app.get("/dashboard/cfdi/mensual")
+def dashboard_cfdi_mensual(cliente_rfc: str, year: int):
+    return get_dashboard_mensual(cliente_rfc, year)

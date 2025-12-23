@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from dashboard import get_dashboard
+from dashboard import get_dashboard_mensual
 
 app = FastAPI()
 
@@ -25,3 +26,4 @@ def dashboard_cfdi_mensual(cliente_rfc: str, year: int):
     except Exception as e:
         print("🔥 ERROR DASHBOARD MENSUAL:", e)
         raise HTTPException(status_code=500, detail=str(e))
+

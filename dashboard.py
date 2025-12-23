@@ -12,3 +12,16 @@ def get_dashboard(cliente_rfc: str, year: int, month: int | None):
 
     return res.data
 
+
+
+def get_dashboard_mensual(cliente_rfc: str, year: int):
+    res = supabase.rpc(
+        "dashboard_cfdi_mensual",
+        {
+            "p_rfc": cliente_rfc,
+            "p_year": year
+        }
+    ).execute()
+
+    return res.data
+
